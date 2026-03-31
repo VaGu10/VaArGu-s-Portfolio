@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VaArGu — Minecraft Builder Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0f0f0f;
+    color: #e7e5e4;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .pixel-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
+
+  .hero {
+    padding: 60px 40px 48px;
+    border-bottom: 2px solid #292524;
+    background: linear-gradient(180deg, #0a1f0a 0%, #0f0f0f 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: repeating-linear-gradient(90deg, #4ade80 0, #4ade80 16px, #166534 16px, #166534 32px);
+  }
+
+  .hero-tag {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #4ade80;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+
+  .hero-name {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(42px, 8vw, 72px);
+    font-weight: 700;
+    line-height: 1;
+    color: #fafaf9;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+
+  .hero-name span { color: #4ade80; }
+
+  .hero-sub {
+    font-size: 16px;
+    color: #a8a29e;
+    font-weight: 300;
+    margin-bottom: 32px;
+    letter-spacing: 0.5px;
+  }
+
+  .server-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #1c1917;
+    border: 1px solid #4ade80;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #4ade80;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .dot {
+    width: 8px; height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-bottom: 2px solid #292524;
+  }
+
+  .stat-item {
+    padding: 24px 32px;
+    border-right: 1px solid #292524;
+    text-align: center;
+  }
+
+  .stat-item:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Cinzel', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #fafaf9;
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: #78716c;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 4px;
+    display: block;
+  }
+
+  .section {
+    padding: 48px 40px;
+    border-bottom: 2px solid #292524;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .section-icon {
+    width: 32px; height: 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+
+  .section-icon span { display: block; border-radius: 1px; }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fafaf9;
+    letter-spacing: 0.5px;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: #292524;
+  }
+
+  .specialties {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+  }
+
+  .spec-card {
+    background: #1c1917;
+    border: 1px solid #292524;
+    padding: 24px 20px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .spec-card:hover { border-color: var(--accent); }
+
+  .spec-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+
+  .spec-icon { font-size: 28px; display: block; margin-bottom: 12px; }
+
+  .spec-title {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fafaf9;
+    margin-bottom: 8px;
+  }
+
+  .spec-desc { font-size: 12px; color: #78716c; line-height: 1.6; }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  .build-card {
+    background: #1c1917;
+    border: 1px solid #292524;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .build-card:hover {
+    transform: translateY(-2px);
+    border-color: #4a4440;
+  }
+
+  .build-preview {
+    height: 140px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .build-preview svg { width: 100%; height: 100%; }
+
+  .build-info {
+    padding: 16px;
+    border-top: 1px solid #292524;
+  }
+
+  .build-type {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--tag-color);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .build-name {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fafaf9;
+    margin-bottom: 6px;
+  }
+
+  .build-desc { font-size: 12px; color: #78716c; line-height: 1.5; }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .skill-row { display: flex; flex-direction: column; gap: 6px; }
+
+  .skill-label { display: flex; justify-content: space-between; font-size: 12px; }
+  .skill-name { color: #d6d3d1; }
+  .skill-pct { color: #78716c; }
+
+  .skill-bar {
+    height: 6px;
+    background: #292524;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .skill-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--bar-color, #4ade80);
+    width: 0;
+    transition: width 1s ease;
+  }
+
+  .about-text {
+    font-size: 15px;
+    color: #a8a29e;
+    line-height: 1.8;
+    max-width: 640px;
+  }
+
+  .about-text strong { color: #e7e5e4; font-weight: 500; }
+
+  .footer {
+    padding: 32px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-note { font-size: 12px; color: #57534e; }
+
+  .footer-brand {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: #4ade80;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 520px) {
+    .hero { padding: 40px 24px 36px; }
+    .section { padding: 36px 24px; }
+    .stats-bar { grid-template-columns: 1fr; }
+    .stat-item { border-right: none; border-bottom: 1px solid #292524; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .footer { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="pixel-bg"></div>
+<div class="content">
+
+  <div class="hero">
+    <div class="hero-tag">Builder Portfolio · PeakPVP Application</div>
+    <h1 class="hero-name">Va<span>Ar</span>Gu</h1>
+    <p class="hero-sub">Minecraft Builder · Medieval · Modern · Nature</p>
+    <div class="server-badge">
+      <span class="dot"></span>
+      Applying to PeakPVP Builder Team
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-num">3</span>
+      <span class="stat-label">Build Styles</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">∞</span>
+      <span class="stat-label">Creativity</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">100%</span>
+      <span class="stat-label">Dedication</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">
+        <span style="background:#4ade80"></span>
+        <span style="background:#166534"></span>
+        <span style="background:#166534"></span>
+        <span style="background:#4ade80"></span>
+      </div>
+      <h2 class="section-title">About Me</h2>
+      <div class="section-line"></div>
+    </div>
+    <p class="about-text">
+      Hey, I'm <strong>VaArGu</strong> — a passionate Minecraft builder with a love for crafting detailed, immersive environments. I specialise in three distinct styles: <strong>medieval fantasy</strong> with rich lore-inspired architecture, <strong>modern & futuristic</strong> design with clean lines and contemporary aesthetics, and <strong>organic nature builds</strong> that blend seamlessly into the terrain. I take pride in every detail — from grand structures down to the smallest decorative block placement.
+    </p>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">
+        <span style="background:#fbbf24"></span>
+        <span style="background:#92400e"></span>
+        <span style="background:#78350f"></span>
+        <span style="background:#fbbf24"></span>
+      </div>
+      <h2 class="section-title">Specialties</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="specialties">
+      <div class="spec-card" style="--accent:#a78bfa">
+        <span class="spec-icon">🏰</span>
+        <div class="spec-title">Medieval & Fantasy</div>
+        <p class="spec-desc">Castles, towers, taverns, dungeons — built with authentic block palettes and attention to historical architecture.</p>
+      </div>
+      <div class="spec-card" style="--accent:#38bdf8">
+        <span class="spec-icon">🏙️</span>
+        <div class="spec-title">Modern & Futuristic</div>
+        <p class="spec-desc">Sleek skyscrapers, smart cities, sci-fi bases — utilising glass, quartz, and concrete for a contemporary feel.</p>
+      </div>
+      <div class="spec-card" style="--accent:#4ade80">
+        <span class="spec-icon">🌿</span>
+        <div class="spec-title">Nature & Organic</div>
+        <p class="spec-desc">Forests, waterfalls, cave systems, custom terrain — sculpted to look and feel completely natural.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">
+        <span style="background:#0ea5e9"></span>
+        <span style="background:#0369a1"></span>
+        <span style="background:#0369a1"></span>
+        <span style="background:#0ea5e9"></span>
+      </div>
+      <h2 class="section-title">Featured Builds</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="gallery">
+
+      <div class="build-card">
+        <div class="build-preview" style="background:#1a0f2e">
+          <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated">
+            <rect width="120" height="80" fill="#1a0f2e"/>
+            <rect x="10" y="5" width="2" height="2" fill="#e2e8f0" opacity="0.6"/>
+            <rect x="40" y="12" width="2" height="2" fill="#e2e8f0" opacity="0.4"/>
+            <rect x="80" y="7" width="2" height="2" fill="#e2e8f0" opacity="0.7"/>
+            <rect x="100" y="15" width="2" height="2" fill="#e2e8f0" opacity="0.5"/>
+            <rect x="95" y="4" width="12" height="12" fill="#fde68a" rx="1"/>
+            <rect x="99" y="4" width="8" height="12" fill="#1a0f2e"/>
+            <rect x="0" y="68" width="120" height="12" fill="#3d2b1f"/>
+            <rect x="0" y="66" width="120" height="4" fill="#4a7c59"/>
+            <rect x="20" y="40" width="80" height="30" fill="#6b6b6b"/>
+            <rect x="14" y="28" width="24" height="42" fill="#7a7a7a"/>
+            <rect x="14" y="24" width="6" height="8" fill="#7a7a7a"/>
+            <rect x="24" y="24" width="6" height="8" fill="#7a7a7a"/>
+            <rect x="32" y="24" width="6" height="8" fill="#7a7a7a"/>
+            <rect x="82" y="28" width="24" height="42" fill="#7a7a7a"/>
+            <rect x="82" y="24" width="6" height="8" fill="#7a7a7a"/>
+            <rect x="92" y="24" width="6" height="8" fill="#7a7a7a"/>
+            <rect x="100" y="24" width="6" height="8" fill="#7a7a7a"/>
+            <rect x="46" y="20" width="28" height="50" fill="#858585"/>
+            <rect x="46" y="16" width="6" height="8" fill="#858585"/>
+            <rect x="57" y="16" width="6" height="8" fill="#858585"/>
+            <rect x="68" y="16" width="6" height="8" fill="#858585"/>
+            <rect x="52" y="52" width="16" height="18" fill="#1a0f2e"/>
+            <rect x="54" y="52" width="12" height="14" rx="6" fill="#1a0f2e"/>
+            <rect x="24" y="38" width="8" height="10" fill="#fde68a" opacity="0.7"/>
+            <rect x="88" y="38" width="8" height="10" fill="#fde68a" opacity="0.7"/>
+            <rect x="53" y="30" width="6" height="8" fill="#fde68a" opacity="0.8"/>
+            <rect x="59" y="12" width="2" height="12" fill="#e2e8f0"/>
+            <rect x="61" y="12" width="8" height="6" fill="#a78bfa"/>
+          </svg>
+        </div>
+        <div class="build-info">
+          <div class="build-type" style="--tag-color:#a78bfa">Medieval / Fantasy</div>
+          <div class="build-name">Stonehaven Keep</div>
+          <p class="build-desc">A fortified castle with twin guard towers, great hall, and underground dungeon network.</p>
+        </div>
+      </div>
+
+      <div class="build-card">
+        <div class="build-preview" style="background:#0a0f1a">
+          <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated">
+            <rect width="120" height="80" fill="#0a0f1a"/>
+            <rect x="90" y="5" width="18" height="18" fill="#e0f2fe" rx="9"/>
+            <rect x="0" y="70" width="120" height="10" fill="#1c1c1c"/>
+            <rect x="0" y="68" width="120" height="4" fill="#374151"/>
+            <rect x="10" y="69" width="8" height="2" fill="#fbbf24" opacity="0.6"/>
+            <rect x="28" y="69" width="8" height="2" fill="#fbbf24" opacity="0.6"/>
+            <rect x="46" y="69" width="8" height="2" fill="#fbbf24" opacity="0.6"/>
+            <rect x="6" y="20" width="20" height="50" fill="#1e3a5f"/>
+            <rect x="8" y="22" width="4" height="4" fill="#7dd3fc" opacity="0.9"/>
+            <rect x="14" y="22" width="4" height="4" fill="#7dd3fc" opacity="0.9"/>
+            <rect x="20" y="22" width="4" height="4" fill="#7dd3fc" opacity="0.9"/>
+            <rect x="8" y="30" width="4" height="4" fill="#7dd3fc"/>
+            <rect x="14" y="30" width="4" height="4" fill="#1e3a5f"/>
+            <rect x="20" y="30" width="4" height="4" fill="#7dd3fc"/>
+            <rect x="8" y="38" width="4" height="4" fill="#7dd3fc" opacity="0.7"/>
+            <rect x="14" y="38" width="4" height="4" fill="#7dd3fc"/>
+            <rect x="20" y="38" width="4" height="4" fill="#7dd3fc" opacity="0.5"/>
+            <rect x="8" y="46" width="4" height="4" fill="#7dd3fc"/>
+            <rect x="14" y="46" width="4" height="4" fill="#7dd3fc" opacity="0.8"/>
+            <rect x="20" y="46" width="4" height="4" fill="#7dd3fc"/>
+            <rect x="15" y="14" width="2" height="8" fill="#94a3b8"/>
+            <rect x="14" y="16" width="4" height="2" fill="#f87171"/>
+            <rect x="34" y="30" width="18" height="40" fill="#164e63"/>
+            <rect x="34" y="30" width="18" height="40" fill="#7dd3fc" opacity="0.15"/>
+            <rect x="36" y="32" width="6" height="6" fill="#7dd3fc" opacity="0.8"/>
+            <rect x="44" y="32" width="6" height="6" fill="#7dd3fc" opacity="0.6"/>
+            <rect x="36" y="42" width="6" height="6" fill="#7dd3fc"/>
+            <rect x="44" y="42" width="6" height="6" fill="#7dd3fc" opacity="0.9"/>
+            <rect x="36" y="52" width="6" height="6" fill="#7dd3fc" opacity="0.7"/>
+            <rect x="44" y="52" width="6" height="6" fill="#7dd3fc"/>
+            <rect x="60" y="38" width="16" height="32" fill="#1e293b"/>
+            <rect x="62" y="40" width="4" height="4" fill="#fbbf24" opacity="0.8"/>
+            <rect x="68" y="40" width="4" height="4" fill="#7dd3fc" opacity="0.9"/>
+            <rect x="62" y="48" width="4" height="4" fill="#7dd3fc"/>
+            <rect x="68" y="48" width="4" height="4" fill="#fbbf24" opacity="0.7"/>
+            <rect x="62" y="56" width="4" height="4" fill="#7dd3fc" opacity="0.8"/>
+            <rect x="68" y="56" width="4" height="4" fill="#7dd3fc"/>
+            <rect x="84" y="42" width="28" height="28" fill="#0f172a"/>
+            <rect x="86" y="44" width="6" height="6" fill="#38bdf8" opacity="0.9"/>
+            <rect x="96" y="44" width="6" height="6" fill="#38bdf8" opacity="0.7"/>
+            <rect x="86" y="54" width="6" height="6" fill="#38bdf8"/>
+            <rect x="96" y="54" width="6" height="6" fill="#38bdf8" opacity="0.8"/>
+            <rect x="86" y="60" width="6" height="4" fill="#fbbf24" opacity="0.9"/>
+            <rect x="96" y="60" width="6" height="4" fill="#38bdf8" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="build-info">
+          <div class="build-type" style="--tag-color:#38bdf8">Modern / Futuristic</div>
+          <div class="build-name">Neon District</div>
+          <p class="build-desc">Urban cityscape featuring glass towers, illuminated streets, and a cyberpunk night atmosphere.</p>
+        </div>
+      </div>
+
+      <div class="build-card">
+        <div class="build-preview" style="background:#0c2310">
+          <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated">
+            <rect width="120" height="80" fill="#0c2310"/>
+            <rect width="120" height="30" fill="#1a3a52"/>
+            <rect width="120" height="10" fill="#1e4d3a" y="20"/>
+            <rect x="57" y="4" width="8" height="8" fill="#fde68a" opacity="0.9"/>
+            <rect x="0" y="60" width="120" height="20" fill="#1d4ed8" opacity="0.7"/>
+            <rect x="0" y="60" width="120" height="6" fill="#3b82f6" opacity="0.5"/>
+            <rect x="10" y="62" width="20" height="2" fill="#60a5fa" opacity="0.4"/>
+            <rect x="50" y="64" width="30" height="2" fill="#60a5fa" opacity="0.3"/>
+            <rect x="0" y="56" width="50" height="8" fill="#166534"/>
+            <rect x="70" y="56" width="50" height="8" fill="#166534"/>
+            <rect x="0" y="52" width="50" height="6" fill="#15803d"/>
+            <rect x="70" y="52" width="50" height="6" fill="#15803d"/>
+            <rect x="30" y="30" width="60" height="30" fill="#6b7280"/>
+            <rect x="30" y="30" width="60" height="6" fill="#4b5563"/>
+            <rect x="52" y="36" width="6" height="26" fill="#93c5fd" opacity="0.6"/>
+            <rect x="54" y="36" width="6" height="26" fill="#bfdbfe" opacity="0.5"/>
+            <rect x="56" y="36" width="4" height="26" fill="#dbeafe" opacity="0.6"/>
+            <rect x="48" y="58" width="18" height="4" fill="#bfdbfe" opacity="0.3"/>
+            <rect x="2" y="32" width="6" height="24" fill="#92400e"/>
+            <rect x="0" y="24" width="18" height="10" fill="#166534"/>
+            <rect x="2" y="16" width="14" height="10" fill="#15803d"/>
+            <rect x="4" y="10" width="10" height="8" fill="#166534"/>
+            <rect x="6" y="6" width="6" height="6" fill="#15803d"/>
+            <rect x="96" y="40" width="6" height="18" fill="#7c2d12"/>
+            <rect x="90" y="32" width="18" height="10" fill="#166534"/>
+            <rect x="92" y="24" width="14" height="10" fill="#15803d"/>
+            <rect x="94" y="18" width="10" height="8" fill="#166534"/>
+            <rect x="60" y="50" width="12" height="8" fill="#166534"/>
+            <rect x="62" y="46" width="8" height="6" fill="#15803d"/>
+            <rect x="10" y="50" width="10" height="6" fill="#15803d"/>
+            <rect x="100" y="50" width="10" height="6" fill="#15803d"/>
+            <rect x="32" y="36" width="4" height="14" fill="#16a34a" opacity="0.5"/>
+            <rect x="80" y="38" width="4" height="12" fill="#16a34a" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="build-info">
+          <div class="build-type" style="--tag-color:#4ade80">Nature / Organic</div>
+          <div class="build-name">Verdant Falls</div>
+          <p class="build-desc">A lush jungle biome featuring layered canopy, natural waterfall, and hidden cave entrances.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">
+        <span style="background:#f87171"></span>
+        <span style="background:#ef4444"></span>
+        <span style="background:#dc2626"></span>
+        <span style="background:#f87171"></span>
+      </div>
+      <h2 class="section-title">Builder Skills</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-row">
+        <div class="skill-label"><span class="skill-name">Detailing & Texturing</span><span class="skill-pct">95%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-pct="95" style="--bar-color:#4ade80"></div></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-label"><span class="skill-name">Terraforming</span><span class="skill-pct">90%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-pct="90" style="--bar-color:#4ade80"></div></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-label"><span class="skill-name">Interior Design</span><span class="skill-pct">88%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-pct="88" style="--bar-color:#38bdf8"></div></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-label"><span class="skill-name">Large-Scale Builds</span><span class="skill-pct">85%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-pct="85" style="--bar-color:#38bdf8"></div></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-label"><span class="skill-name">WorldEdit / VoxelSniper</span><span class="skill-pct">80%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-pct="80" style="--bar-color:#a78bfa"></div></div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-label"><span class="skill-name">Team Collaboration</span><span class="skill-pct">92%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-pct="92" style="--bar-color:#a78bfa"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div>
+      <div class="footer-brand">VaArGu · PeakPVP Application</div>
+      <p class="footer-note">Ready to build something extraordinary.</p>
+    </div>
+    <p class="footer-note">Minecraft Builder Portfolio · 2026</p>
+  </div>
+
+</div>
+<script>
+  setTimeout(() => {
+    document.querySelectorAll('.skill-fill').forEach(f => {
+      f.style.width = f.dataset.pct + '%';
+    });
+  }, 300);
+</script>
+</body>
+</html>
